@@ -18,7 +18,8 @@ export default class ClientCodeUseCase {
 
         this.storeService.message.push('Chain: Monkey > Squirrel > Dog');
         this.execute(monkey);
-        this.storeService.message.push('Subchain: Squirrel > Dog\n');
+        this.storeService.message.push('==============================');
+        this.storeService.message.push('Subchain: Squirrel > Dog');
         this.execute(squirrel);
     }
 
