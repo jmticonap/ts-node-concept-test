@@ -3,21 +3,22 @@ import Handler from "../../domain/service/handler.service";
 import DogHandler from "../handler/dog.handler";
 import MonkeyHandler from "../handler/monkey.handler";
 import SquirrelHandler from "../handler/squirrel.handler";
+import AppStoreService from "../service/app-store.service";
 
 @singleton()
 export default class ClientCodeUseCase {
+
     constructor(
         @inject(MonkeyHandler) private monkey: Handler,
         @inject(SquirrelHandler) private squirrel: Handler,
         @inject(DogHandler) private dog: DogHandler,
+        @inject(AppStoreService) public storeService: AppStoreService,
     ) {
         this.monkey.setNext(this.squirrel).setNext(this.dog);
 
-        console.log('Chain: Monkey > Squirrel > Dog\n');
+        this.storeService.message.push('Chain: Monkey > Squirrel > Dog');
         this.execute(monkey);
-        console.log('');
-
-        console.log('Subchain: Squirrel > Dog\n');
+        this.storeService.message.push('Subchain: Squirrel > Dog\n');
         this.execute(squirrel);
     }
 
@@ -25,13 +26,13 @@ export default class ClientCodeUseCase {
         const foods = ['Nut', 'Banana', 'Cup of coffee'];
 
         for (const food of foods) {
-            console.log(`Client: Who wants a ${food}?`);
+            this.storeService.message.push(`Client: Who wants a ${food}?`);
 
             const result = handler.handle(food);
             if (result) {
-                console.log(`  ${result}`);
+                this.storeService.message.push(`  ${result}`);
             } else {
-                console.log(`  ${food} was left untouched.`);
+                this.storeService.message.push(`  ${food} was left untouched.`);
             }
         }
     }

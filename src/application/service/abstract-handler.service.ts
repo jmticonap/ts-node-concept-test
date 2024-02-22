@@ -1,8 +1,11 @@
 import Handler from "../../domain/service/handler.service";
+import AppStoreService from "./app-store.service";
 
 export default abstract class AbstractHandler implements Handler
 {
     private nextHandler: Handler | undefined;
+
+    constructor(private storeService: AppStoreService) {}
 
     public setNext(handler: Handler): Handler {
         this.nextHandler = handler;
@@ -14,6 +17,7 @@ export default abstract class AbstractHandler implements Handler
 
     public handle(request: string): string | null {
         if (this.nextHandler) {
+            this.storeService.message.push(request);
             return this.nextHandler.handle(request);
         }
 
