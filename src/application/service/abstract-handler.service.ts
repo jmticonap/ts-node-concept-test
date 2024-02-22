@@ -2,7 +2,7 @@ import Handler from "../../domain/service/handler.service";
 
 export default abstract class AbstractHandler implements Handler
 {
-    private nextHandler: Handler;
+    private nextHandler: Handler | undefined;
 
     public setNext(handler: Handler): Handler {
         this.nextHandler = handler;
